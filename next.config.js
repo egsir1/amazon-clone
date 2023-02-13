@@ -9,4 +9,8 @@ module.exports = {
       "fakestoreapi.com/products",
     ],
   },
+
+  experimental: {
+    appDir: true,
+  },
 };

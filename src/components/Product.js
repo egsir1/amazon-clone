@@ -1,26 +1,45 @@
-import { StarIcon } from "@heroicons/react/solid";
+// import { StarIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import { useState } from "react";
-
-const MAX_RATING = 5;
-const MIN_RATING = 1;
+// import { useState } from "react";
+import { addToBasket } from "../slices/basketSlice";
+import { useDispatch } from "react-redux";
 
 function Product({ id, title, price, description, category, image }) {
-  const [rating] = useState(
-    Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
-  );
-  const [hasPrime] = useState(Math.random() < 0.5);
+  //   Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
+  //const [hasPrime] = useState(Math.random() < 0.5);
+  const dispatch = useDispatch();
+
+  const addItemToBasket = () => {
+    const product = {
+      id,
+      title,
+      price,
+      description,
+      category,
+      image,
+    };
+
+    //Sending the product as an action to the REDUX store... the basket slice
+    dispatch(addToBasket(product));
+  };
 
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10">
-      <p className="absolute top-2 right-2 text-xs italic text-gray-400">
+      <div className="absolute top-2 right-2 bag text-xs  object-contain italic text-gray-400">
         {category}
-      </p>
+      </div>
 
-      <Image src={image} height={200} width={200} objectFit="contain" />
+      <Image
+        src={image}
+        alt="product"
+        height={200}
+        width={200}
+        priority
+        style={{ width: "auto", objectFit: "contain" }}
+      />
 
       <h4 className="my-3">{title}</h4>
-      <div className="flex">
+      {/* <div className="flex">
         {Array(rating)
           .fill()
           .map((_, i) => (
@@ -29,19 +48,21 @@ function Product({ id, title, price, description, category, image }) {
               className=" text-yellow-500 w-6 h-5 yellow-500"
             />
           ))}
-      </div>
+      </div> */}
 
-      <p className="text-xs my-2 line-clamp-2">{description}</p>
+      <div className="text-xs my-2 line-clamp-2">{description}</div>
 
       <div className="mb-5">${price}</div>
 
-      {hasPrime && (
+      {/* {hasPrime && (
         <div className="flex items-center space-x-2 mt-5">
-          <img className="w-12" src="https://links.papareact.com/fdw" />
-          <p className="text-xs text-gray-500">FREE Next-day Delivery</p>
+          <img className="w-12 h-auto" src="https://links.papareact.com/fdw" />
+          <div className="text-xs text-gray-500">FREE Next-day Delivery</div>
         </div>
-      )}
-      <button className="mt-auto button">Add to Basket</button>
+      )} */}
+      <button onClick={addItemToBasket} className="mt-auto button">
+        Add to Basket
+      </button>
     </div>
   );
 }
